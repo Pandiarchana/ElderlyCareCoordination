@@ -1,5 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 🌟 Main App Theme -->
+    <style name="Theme.ElderlyCareCoordination" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="colorPrimary">@color/primaryGreen</item>
+        <item name="colorOnPrimary">@color/white</item>
 
-    <style name="Theme.ElderlyCareCoordination" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- Background & Status Bar -->
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/darkGreen</item>
+        <item name="android:navigationBarColor">@color/darkGreen</item>
+    </style>
+
+    <!-- 🌟 Splash Screen Theme -->
+    <style name="Theme.ElderlyCareCoordination.Splash" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
 </resources>

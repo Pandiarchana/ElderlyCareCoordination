@@ -1,18 +1,19 @@
-<resources>
-    <!-- 🌟 Main App Theme -->
-    <style name="Theme.ElderlyCareCoordination" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Primary Colors -->
-        <item name="colorPrimary">@color/primaryGreen</item>
-        <item name="colorOnPrimary">@color/white</item>
-
-        <!-- Background & Status Bar -->
-        <item name="android:colorBackground">@color/white</item>
-        <item name="android:statusBarColor">@color/darkGreen</item>
-        <item name="android:navigationBarColor">@color/darkGreen</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Light Theme -->
+    <style name="Theme.ElderlyCareCoordination" parent="Theme.ElderlyCareCoordination.Dark">
+        <item name="android:colorPrimary">@color/primary_green</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/primary_green</item>
+        <item name="android:navigationBarColor">@color/primary_green</item>
     </style>
 
-    <!-- 🌟 Splash Screen Theme -->
-    <style name="Theme.ElderlyCareCoordination.Splash" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:windowBackground">@color/white</item>
+    <!-- Dark Theme -->
+    <style name="Theme.ElderlyCareCoordination.Dark" parent="Theme.ElderlyCareCoordination">
+        <item name="android:colorPrimary">@color/primary_green</item>
+        <item name="android:color">@color/black</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:statusBarColor">@color/primary_green</item>
+        <item name="android:navigationBarColor">@color/primary_green</item>
     </style>
 </resources>

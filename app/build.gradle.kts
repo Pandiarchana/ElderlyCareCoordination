@@ -5,20 +5,21 @@ plugins {
 
 android {
     namespace = "com.example.elderlycarecoordination"
-    compileSdk = 34  // ✅ Make sure compileSdk is defined
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.elderlycarecoordination"
-        minSdk = 21  // ✅ Define minSdk properly
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false  // ✅ Correct syntax in Kotlin DSL
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -43,28 +44,38 @@ android {
         kotlinCompilerExtensionVersion = "1.5.4"
     }
 }
+
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
 
-    // ✅ Ensure Material3 Dependency is Correct
+    // Material 3
     implementation("androidx.compose.material3:material3:1.2.1")
+
+    // Compose UI & Tooling
     implementation("androidx.compose.ui:ui:1.5.4")
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
-    // ✅ Navigation for Compose
+
+    // Navigation for Compose
     implementation("androidx.navigation:navigation-compose:2.7.6")
 
-    // ✅ Lifecycle for Compose
+
+    // Lifecycle for Compose
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
-    // ✅ Testing
+    // Material Icons Extended (Fixes icon references like Event, LocalPharmacy, Note, Warning)
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
+    // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
 
-    // ✅ Debugging
+    // Debugging
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
+
 }

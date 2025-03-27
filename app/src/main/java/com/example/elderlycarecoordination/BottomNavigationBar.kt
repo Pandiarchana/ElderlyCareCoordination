@@ -1,49 +1,51 @@
 package com.example.elderlycarecoordination.ui.screens
 
+import android.app.Activity
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.CropSquare
+import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocalPharmacy
-import androidx.compose.material.icons.filled.Note
-import androidx.compose.material.icons.filled.Warning
 
-/**
- * Data class representing a single bottom navigation item.
- */
-data class BottomNavItem(
-    val title: String,
+// Data class for a navigation item.
+data class NavItem(
     val icon: androidx.compose.ui.graphics.vector.ImageVector,
     val route: String
 )
 
-/**
- * BottomNavigationBar composable.
- *
- * This composable displays a navigation bar with 5 items:
- * Home, Medication, Appointments, Daily Log, and Emergency.
- * It uses a green background (Color(0xFF3A8667)) and white text/icons.
- */
 @Composable
 fun BottomNavigationBar(navController: NavController) {
+    // Get the current Activity context to handle back and exit actions.
+    val context = LocalContext.current
+    val activity = context as? Activity
+
+    // Local state to show/hide exit confirmation dialog.
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    // Define three nav items (icons only, no labels).
     val items = listOf(
-        BottomNavItem("Home", Icons.Filled.Home, "home"),
-        BottomNavItem("Medication", Icons.Filled.LocalPharmacy, "medication_tracker"),
-        BottomNavItem("Appointments", Icons.Filled.Event, "appointment_scheduler"),
-        BottomNavItem("Daily Log", Icons.Filled.Note, "daily_care_log"),
-        BottomNavItem("Emergency", Icons.Filled.Warning, "emergency_alerts")
+        NavItem(icon = Icons.Filled.ArrowBack, route = "nav_back"),
+        NavItem(icon = Icons.Outlined.RadioButtonUnchecked, route = "home"),
+        NavItem(icon = Icons.Outlined.CropSquare, route = "nav_exit")
     )
 
-    // Observe the current back stack entry to highlight the selected item.
+    // Observe current route.
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -53,26 +55,71 @@ fun BottomNavigationBar(navController: NavController) {
     ) {
         items.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(item.icon, contentDescription = item.title) },
-                label = { Text(item.title) },
-                selected = currentRoute == item.route,
+                icon = { Icon(item.icon, contentDescription = null) },
+                label = { /* No label */ },
+                selected = (currentRoute == item.route),
                 onClick = {
-                    navController.navigate(item.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    when (item.route) {
+                        "nav_back" -> {
+                            // Pop back if possible; if not, finish the activity.
+                            if (!navController.popBackStack() && activity != null) {
+                                activity.finish()
+                            }
+                        }
+                        "home" -> {
+                            navController.navigate("home") {
+                                launchSingleTop = true
+                                restoreState = true
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                            }
+                        }
+                        "nav_exit" -> {
+                            // Instead of direct exit, show confirmation dialog.
+                            showExitDialog = true
                         }
                     }
                 },
-                alwaysShowLabel = true,
+                alwaysShowLabel = false,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Color.White,
-                    selectedTextColor = Color.White,
-                    unselectedIconColor = Color.White.copy(alpha = 0.7f),
-                    unselectedTextColor = Color.White.copy(alpha = 0.7f)
+                    unselectedIconColor = Color.White.copy(alpha = 0.7f)
                 )
             )
         }
+    }
+
+    // Exit confirmation dialog.
+    if (showExitDialog) {
+        AlertDialog(
+            onDismissRequest = { showExitDialog = false },
+            title = {
+                Text("Exit App", color = Color.White)
+            },
+            text = {
+                Text("Do you want to exit the app?", color = Color.White)
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showExitDialog = false
+                        activity?.finishAffinity()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A8667))
+                ) {
+                    Text("Exit", color = Color.White)
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showExitDialog = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A8667))
+                ) {
+                    Text("Cancel", color = Color.White)
+                }
+            },
+            containerColor = Color(0xFF3A8667)
+        )
     }
 }

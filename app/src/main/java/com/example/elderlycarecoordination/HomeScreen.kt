@@ -1,6 +1,10 @@
 package com.example.elderlycarecoordination.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -23,32 +27,32 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 /**
- * Local ViewModel for the Home screen.
- * Holds a greeting string that we display in HomeScreen.
+ * A minimal ViewModel to demonstrate how you might store or retrieve data for HomeScreen.
+ * If you don't need a greeting, you can remove this class and references to it.
  */
 class HomeViewModel : ViewModel() {
     var greeting = mutableStateOf("Welcome to Elderly Care Coordination!")
 }
 
-/**
- * A fully self-contained HomeScreen composable with a top bar, greeting text,
- * and navigation buttons. Accepts padding from the NavHost's Scaffold content lambda.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, padding: PaddingValues) {
-    // Green color for the top bar and buttons
-    val logoGreen = Color(0xFF3A8667)
-    // Obtain the HomeViewModel instance
+fun HomeScreen(
+    navController: NavController,
+    padding: androidx.compose.foundation.layout.PaddingValues
+) {
+    // If you want to display a greeting, you can use this ViewModel:
     val homeViewModel: HomeViewModel = viewModel()
+    // val greetingText = homeViewModel.greeting.value
 
-    // A nested Scaffold to define the top bar
+    val logoGreen = Color(0xFF3A8667)
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                // Changed the top bar title to "Welcome, CHINNASAMY PALANIAPPAN." as requested
                 title = {
                     Text(
-                        text = "Elderly Care Coordination",
+                        text = "Welcome, CHINNASAMY PALANIAPPAN.",
                         fontSize = 20.sp,
                         color = Color.White
                     )
@@ -57,26 +61,25 @@ fun HomeScreen(navController: NavController, padding: PaddingValues) {
             )
         }
     ) { innerPadding ->
-        // Apply both the innerPadding from this Scaffold
-        // and the external padding from the NavHost's Scaffold
         Column(
             modifier = Modifier
-                .padding(innerPadding)
-                .padding(padding)
+                .padding(innerPadding)       // from the Scaffold
+                .padding(padding)           // from NavHost
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Display the greeting from the ViewModel
+            /*
+            // If you want to show the greeting from the ViewModel:
             Text(
-                text = homeViewModel.greeting.value,
+                text = greetingText,
                 fontSize = 18.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+            */
 
-            // Navigation buttons
             CustomButton("Medication Tracker", navController, "medication_tracker", logoGreen)
             CustomButton("Appointment Scheduler", navController, "appointment_scheduler", logoGreen)
             CustomButton("Daily Care Log", navController, "daily_care_log", logoGreen)
@@ -85,9 +88,6 @@ fun HomeScreen(navController: NavController, padding: PaddingValues) {
     }
 }
 
-/**
- * A reusable navigation button composable.
- */
 @Composable
 fun CustomButton(
     text: String,

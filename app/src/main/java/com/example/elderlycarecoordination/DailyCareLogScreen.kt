@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.PaddingValues
 
-// Data class representing a single daily log entry
+// Data class representing one daily log entry.
 data class DailyLogEntry(
     val title: String,
     val time: String,
     val explanation: String
 )
 
-// Data class grouping daily log entries under a day (e.g., Monday)
+// Data class grouping log entries under a day.
 data class DayLogs(
     val day: String,
     val logs: List<DailyLogEntry>
@@ -39,24 +39,24 @@ data class DayLogs(
 fun DailyCareLogScreen(padding: PaddingValues) {
     var selectedLog by remember { mutableStateOf<DailyLogEntry?>(null) }
 
-    // Full-day schedule for each day of the week (Monday to Sunday) with 8 bullet items each.
+    // Full-day schedule for each day (Monday to Sunday) with 8 items per day.
     val weekLogs = listOf(
         DayLogs(
             "Monday", listOf(
                 DailyLogEntry(
                     "Wake Up & Morning Meds",
                     "6:30 AM",
-                    "Take morning medications (e.g., blood pressure and heart meds) immediately after waking."
+                    "Take morning medications (blood pressure, heart meds) as soon as you wake up."
                 ),
                 DailyLogEntry(
                     "Breakfast",
                     "7:30 AM",
-                    "Eat a heart-healthy breakfast such as oatmeal, fruit, and water."
+                    "A nutritious breakfast: oatmeal, fruit, and water."
                 ),
                 DailyLogEntry(
                     "Light Exercise",
                     "9:00 AM",
-                    "Engage in gentle stretching or a short walk to improve circulation."
+                    "Engage in gentle stretching or a short walk to boost circulation."
                 ),
                 DailyLogEntry(
                     "Lunch & Midday Meds",
@@ -66,22 +66,22 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Afternoon Rest",
                     "2:00 PM",
-                    "Take a short nap or relax to reduce fatigue."
+                    "Take a short nap or relax quietly to reduce fatigue."
                 ),
                 DailyLogEntry(
                     "Evening Activity",
                     "5:00 PM",
-                    "Do light chores or relax with a calm hobby."
+                    "Perform light chores or enjoy a calm hobby."
                 ),
                 DailyLogEntry(
                     "Dinner & Evening Meds",
                     "7:00 PM",
-                    "Eat a balanced dinner and take any prescribed evening medications."
+                    "Eat a balanced dinner and take your evening medications."
                 ),
                 DailyLogEntry(
                     "Bedtime Routine",
                     "10:00 PM",
-                    "Wind down, check vitals if necessary, and prepare for sleep."
+                    "Wind down with relaxation and prepare for sleep."
                 )
             )
         ),
@@ -90,42 +90,42 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Wake Up & Meds",
                     "6:30 AM",
-                    "Take morning medications and measure your vitals."
+                    "Check vitals and take your morning medications."
                 ),
                 DailyLogEntry(
                     "Breakfast",
                     "7:30 AM",
-                    "Enjoy whole grain toast, eggs, and a fruit smoothie."
+                    "Enjoy whole grain toast, eggs, and fruit juice."
                 ),
                 DailyLogEntry(
                     "Mid-Morning Check",
                     "9:30 AM",
-                    "Record blood pressure and note any symptoms."
+                    "Record your blood pressure and note any unusual symptoms."
                 ),
                 DailyLogEntry(
-                    "Lunch",
+                    "Lunch & Meds",
                     "12:30 PM",
-                    "Have a heart-friendly lunch, such as salad with lean protein."
+                    "A heart-friendly lunch with lean protein and vegetables."
                 ),
                 DailyLogEntry(
                     "Afternoon Nap",
                     "2:30 PM",
-                    "A short nap helps maintain energy levels."
+                    "Take a brief nap to recharge your energy."
                 ),
                 DailyLogEntry(
                     "Evening Walk",
                     "5:30 PM",
-                    "Take a gentle walk before dinner."
+                    "A gentle walk to aid digestion and circulation."
                 ),
                 DailyLogEntry(
                     "Dinner & Meds",
                     "7:30 PM",
-                    "Eat a light dinner and take evening medications."
+                    "Have a light dinner and take evening medications."
                 ),
                 DailyLogEntry(
                     "Prepare for Bed",
                     "10:00 PM",
-                    "Wind down with relaxation activities and prepare for sleep."
+                    "Wind down and prepare for a restful sleep."
                 )
             )
         ),
@@ -134,42 +134,42 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Wake Up & Meds",
                     "6:30 AM",
-                    "Check heart rate and take morning medications."
+                    "Check heart rate and take your morning meds."
                 ),
                 DailyLogEntry(
                     "Breakfast",
                     "7:30 AM",
-                    "Have oatmeal, berries, and water for a nutritious start."
+                    "Oatmeal with berries and water for a healthy start."
                 ),
                 DailyLogEntry(
                     "Hydration Check",
                     "10:00 AM",
-                    "Ensure you’re well-hydrated without overloading on fluids."
+                    "Ensure you’re well-hydrated without excessive fluid intake."
                 ),
                 DailyLogEntry(
                     "Lunch & Meds",
                     "12:00 PM",
-                    "Enjoy a balanced lunch along with midday medications."
+                    "Eat a balanced lunch and take any scheduled midday medications."
                 ),
                 DailyLogEntry(
-                    "Afternoon Nap",
+                    "Afternoon Rest",
                     "2:00 PM",
-                    "Take a short nap or relax quietly."
+                    "Rest or take a short nap to ease fatigue."
                 ),
                 DailyLogEntry(
                     "Light Chores",
                     "4:00 PM",
-                    "Engage in gentle tasks like folding laundry."
+                    "Perform gentle tasks such as folding laundry."
                 ),
                 DailyLogEntry(
                     "Dinner & Meds",
                     "7:00 PM",
-                    "Have dinner and take evening medications as scheduled."
+                    "Have dinner and take your evening medications on time."
                 ),
                 DailyLogEntry(
                     "Bedtime Routine",
                     "10:00 PM",
-                    "Prepare for sleep with calm activities."
+                    "Prepare for sleep with calming activities."
                 )
             )
         ),
@@ -178,42 +178,42 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Wake Up & Meds",
                     "6:30 AM",
-                    "Take morning medications and check vitals."
+                    "Take your morning medications and check vitals."
                 ),
                 DailyLogEntry(
                     "Breakfast",
                     "7:30 AM",
-                    "Have whole grain cereal, fruit, and low-fat milk."
+                    "Enjoy whole grain cereal, fruit, and low-fat milk."
                 ),
                 DailyLogEntry(
                     "Physical Therapy",
                     "9:00 AM",
-                    "Perform prescribed gentle exercises."
+                    "Perform gentle exercises as prescribed by your therapist."
                 ),
                 DailyLogEntry(
                     "Lunch",
                     "12:00 PM",
-                    "Eat a balanced meal with lean protein and vegetables."
+                    "Have a nutritious lunch with lean protein and vegetables."
                 ),
                 DailyLogEntry(
                     "BP Check",
                     "2:30 PM",
-                    "Monitor blood pressure for any unusual readings."
+                    "Monitor your blood pressure for any unusual changes."
                 ),
                 DailyLogEntry(
                     "Evening Stroll",
                     "5:00 PM",
-                    "Take a light walk to improve circulation."
+                    "Take a light walk to aid digestion."
                 ),
                 DailyLogEntry(
                     "Dinner & Meds",
                     "7:30 PM",
-                    "Enjoy dinner and take evening medications."
+                    "Enjoy a balanced dinner and take your evening medications."
                 ),
                 DailyLogEntry(
                     "Wind Down",
                     "10:00 PM",
-                    "Relax and prepare for bed."
+                    "Relax and prepare for a good night's sleep."
                 )
             )
         ),
@@ -222,7 +222,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Wake Up & Meds",
                     "6:30 AM",
-                    "Record your weight, take morning meds, and check fluid retention."
+                    "Record your vitals, take morning meds, and check for fluid retention."
                 ),
                 DailyLogEntry(
                     "Breakfast",
@@ -232,27 +232,27 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Mid-Morning Activity",
                     "9:00 AM",
-                    "Do some mild stretching or seated exercises."
+                    "Perform mild stretching or seated exercises."
                 ),
                 DailyLogEntry(
                     "Lunch",
                     "12:00 PM",
-                    "Have salmon with brown rice and vegetables."
+                    "Have a healthy lunch, like a salad with lean protein."
                 ),
                 DailyLogEntry(
                     "Afternoon Nap",
                     "2:00 PM",
-                    "Take a 20-30 minute nap."
+                    "Take a 20-30 minute nap for rest."
                 ),
                 DailyLogEntry(
                     "BP & HR Check",
                     "4:00 PM",
-                    "Monitor blood pressure and heart rate."
+                    "Record your blood pressure and heart rate."
                 ),
                 DailyLogEntry(
                     "Dinner & Meds",
                     "7:00 PM",
-                    "Enjoy a low-sodium dinner and take medications."
+                    "Enjoy a low-sodium dinner and take your medications."
                 ),
                 DailyLogEntry(
                     "Bedtime Routine",
@@ -266,7 +266,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Late Wake-Up & Meds",
                     "7:00 AM",
-                    "Take morning medications upon waking."
+                    "Wake up, take morning medications, and relax."
                 ),
                 DailyLogEntry(
                     "Breakfast",
@@ -276,17 +276,17 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Leisure Activity",
                     "10:00 AM",
-                    "Engage in a gentle hobby like reading or gardening."
+                    "Engage in a gentle hobby, such as reading or gardening."
                 ),
                 DailyLogEntry(
                     "Lunch",
                     "12:30 PM",
-                    "Have a light meal such as soup and salad."
+                    "Have a light meal, such as soup and salad."
                 ),
                 DailyLogEntry(
                     "Afternoon Nap",
                     "2:30 PM",
-                    "A brief nap to recharge energy."
+                    "Take a brief nap to recharge."
                 ),
                 DailyLogEntry(
                     "Family Time",
@@ -310,7 +310,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Wake Up & Meds",
                     "7:00 AM",
-                    "Check vitals and take morning medications."
+                    "Check your vitals and take morning medications."
                 ),
                 DailyLogEntry(
                     "Breakfast",
@@ -325,7 +325,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Lunch",
                     "12:00 PM",
-                    "Eat a balanced meal with vegetables and lean protein."
+                    "Eat a balanced meal with veggies and lean protein."
                 ),
                 DailyLogEntry(
                     "Afternoon Rest",
@@ -335,7 +335,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Early Evening Walk",
                     "5:00 PM",
-                    "Take a gentle stroll if weather permits."
+                    "Take a gentle stroll if the weather permits."
                 ),
                 DailyLogEntry(
                     "Dinner & Meds",
@@ -345,7 +345,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
                 DailyLogEntry(
                     "Bedtime Routine",
                     "10:00 PM",
-                    "Wind down and prepare for a restful sleep."
+                    "Wind down and prepare for sleep."
                 )
             )
         )
@@ -361,7 +361,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // GREEN HEADER
+            // GREEN HEADER (only header is green)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -401,7 +401,7 @@ fun DailyCareLogScreen(padding: PaddingValues) {
         }
     }
 
-    // AlertDialog for selected daily log entry
+    // ALERT DIALOG for selected log entry
     if (selectedLog != null) {
         AlertDialog(
             onDismissRequest = { selectedLog = null },
@@ -445,6 +445,19 @@ fun DayLogSection(
         modifier = Modifier.padding(bottom = 8.dp)
     )
     dayLogs.logs.forEach { logEntry ->
+        // Determine a dynamic color based on keywords in the title.
+        val logColor = when {
+            logEntry.title.contains("Wake", ignoreCase = true) -> Color(0xFFD32F2F)     // Red
+            logEntry.title.contains("Breakfast", ignoreCase = true) -> Color(0xFFFFA000)  // Amber
+            logEntry.title.contains("Exercise", ignoreCase = true) -> Color(0xFF1976D2)   // Blue
+            logEntry.title.contains("Lunch", ignoreCase = true) -> Color(0xFF388E3C)      // Green
+            logEntry.title.contains("Med", ignoreCase = true) -> Color(0xFF0D47A1)        // Dark Blue for meds
+            logEntry.title.contains("Rest", ignoreCase = true) -> Color(0xFF8E24AA)       // Purple
+            logEntry.title.contains("Dinner", ignoreCase = true) -> Color(0xFFF57C00)       // Orange
+            logEntry.title.contains("Bedtime", ignoreCase = true) -> Color(0xFF6D4C41)      // Brown
+            else -> Color.Black
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -459,12 +472,11 @@ fun DayLogSection(
                 modifier = Modifier.padding(end = 8.dp)
             )
             Column {
-                // Use a different color (purple) instead of dark blue
                 Text(
                     text = "${logEntry.title} - ${logEntry.time}",
                     fontSize = 16.sp,
-                    color = Color(0xFF1B5E20),
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = logColor
                 )
             }
         }

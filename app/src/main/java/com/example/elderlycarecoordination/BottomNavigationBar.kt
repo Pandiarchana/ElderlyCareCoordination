@@ -10,9 +10,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.CropSquare
-import androidx.compose.material.icons.outlined.RadioButtonUnchecked
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,21 +31,17 @@ data class NavItem(
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    // Get the current Activity context to handle back and exit actions.
     val context = LocalContext.current
     val activity = context as? Activity
 
-    // Local state to show/hide exit confirmation dialog.
     var showExitDialog by remember { mutableStateOf(false) }
 
-    // Define three nav items (icons only, no labels).
     val items = listOf(
-        NavItem(icon = Icons.Filled.ArrowBack, route = "nav_back"),
-        NavItem(icon = Icons.Outlined.RadioButtonUnchecked, route = "home"),
-        NavItem(icon = Icons.Outlined.CropSquare, route = "nav_exit")
+        NavItem(icon = Icons.AutoMirrored.Filled.ArrowBack, route = "nav_back"),
+        NavItem(icon = Icons.Filled.RadioButtonUnchecked, route = "home"),
+        NavItem(icon = Icons.Filled.CheckBoxOutlineBlank, route = "nav_exit")
     )
 
-    // Observe current route.
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -61,7 +57,6 @@ fun BottomNavigationBar(navController: NavController) {
                 onClick = {
                     when (item.route) {
                         "nav_back" -> {
-                            // Pop back if possible; if not, finish the activity.
                             if (!navController.popBackStack() && activity != null) {
                                 activity.finish()
                             }
@@ -76,7 +71,6 @@ fun BottomNavigationBar(navController: NavController) {
                             }
                         }
                         "nav_exit" -> {
-                            // Instead of direct exit, show confirmation dialog.
                             showExitDialog = true
                         }
                     }
@@ -90,7 +84,6 @@ fun BottomNavigationBar(navController: NavController) {
         }
     }
 
-    // Exit confirmation dialog.
     if (showExitDialog) {
         AlertDialog(
             onDismissRequest = { showExitDialog = false },

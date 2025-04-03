@@ -19,7 +19,7 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -59,6 +59,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
 
+    // ✅ Material Icons Extended — added this line:
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.6")
 
@@ -72,4 +75,10 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
+}
+
+kapt {
+    javacOptions {
+        option("--add-exports", "jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED")
+    }
 }

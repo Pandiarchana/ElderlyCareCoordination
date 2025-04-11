@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("kotlin-kapt") // ✅ Needed for Room annotations
 }
 
 android {
@@ -59,16 +59,20 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
 
-    // ✅ Material Icons Extended — added this line:
+    // Material Icons
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.6")
 
-    // Room (SQLite)
-    implementation("androidx.room:room-runtime:2.5.2")
-    kapt("androidx.room:room-compiler:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
+    // ✅ Room 2.6.1 - Latest and stable
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    // ✅ Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
@@ -77,6 +81,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
 }
 
+// ✅ Required for Kotlin + Room using Java 17
 kapt {
     javacOptions {
         option("--add-exports", "jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED")

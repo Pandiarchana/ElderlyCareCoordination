@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.PaddingValues
+import com.example.elderlycarecoordination.viewmodel.EmergencyAlertViewModel
+
 
 // Data class for an emergency alert.
 data class EmergencyAlert(
@@ -30,7 +32,7 @@ data class EmergencyAlert(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmergencyAlertsScreen(padding: PaddingValues) {
+fun EmergencyAlertsScreen(padding: PaddingValues, viewModel: EmergencyAlertViewModel){
     var selectedAlert by remember { mutableStateOf<EmergencyAlert?>(null) }
 
     // List of many emergency alerts with different titles, descriptions (including emojis), and times.

@@ -1,107 +1,115 @@
 package com.example.elderlycarecoordination.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.elderlycarecoordination.R
 
-/**
- * A minimal ViewModel to demonstrate how you might store or retrieve data for HomeScreen.
- * If you don't need a greeting, you can remove this class and references to it.
- */
-class HomeViewModel : ViewModel() {
-    var greeting = mutableStateOf("Welcome to Elderly Care Coordination!")
-}
+data class FeatureItem(val title: String, val iconRes: Int, val route: String)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    padding: androidx.compose.foundation.layout.PaddingValues
-) {
-    // If you want to display a greeting, you can use this ViewModel:
-    val homeViewModel: HomeViewModel = viewModel()
-    // val greetingText = homeViewModel.greeting.value
+fun HomeScreen(navController: NavController, padding: PaddingValues) {
+    val features = listOf(
+        FeatureItem("Medication", R.drawable.medicine_tacker, "medication_tracker"),
+        FeatureItem("Appointments", R.drawable.appoinmnet, "appointment_scheduler"),
+        FeatureItem("Care Log", R.drawable.dailycare_icon, "daily_care_log"),
+        FeatureItem("Alerts", R.drawable.emergency_alter, "emergency_alerts"),
+        FeatureItem("Family", R.drawable.family, "family_members")
+    )
 
-    val logoGreen = Color(0xFF3A8667)
+    Box(modifier = Modifier.fillMaxSize()) {
+        // 🖼️ Background Image
+        Image(
+            painter = painterResource(id = R.drawable.background),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                // Changed the top bar title to "Welcome, CHINNASAMY PALANIAPPAN." as requested
-                title = {
-                    Text(
-                        text = "Welcome, CHINNASAMY PALANIAPPAN.",
-                        fontSize = 20.sp,
-                        color = Color.White
-                    )
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = logoGreen)
-            )
-        }
-    ) { innerPadding ->
+        // Overlay content
         Column(
             modifier = Modifier
-                .padding(innerPadding)       // from the Scaffold
-                .padding(padding)           // from NavHost
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(padding)
         ) {
-            /*
-            // If you want to show the greeting from the ViewModel:
-            Text(
-                text = greetingText,
-                fontSize = 18.sp,
-                color = Color.Black,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            */
+            // 🔷 Top Banner
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp)
+            ) {
+                Text(
+                    text = "Elderly Care Coordination",
+                    fontSize = 22.sp,
+                    color = Color.White,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
 
-            CustomButton("Medication Tracker", navController, "medication_tracker", logoGreen)
-            CustomButton("Appointment Scheduler", navController, "appointment_scheduler", logoGreen)
-            CustomButton("Daily Care Log", navController, "daily_care_log", logoGreen)
-            CustomButton("Emergency Alerts", navController, "emergency_alerts", logoGreen)
+            // 🔳 Feature Grid
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(features) { feature ->
+                    FeatureCard(feature = feature) {
+                        navController.navigate(feature.route)
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun CustomButton(
-    text: String,
-    navController: NavController,
-    route: String,
-    color: Color
-) {
-    Button(
-        onClick = { navController.navigate(route) },
+fun FeatureCard(feature: FeatureItem, onClick: () -> Unit) {
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = color)
+            .aspectRatio(1f)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(6.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.95f))
     ) {
-        Text(text, color = Color.White, fontSize = 16.sp)
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = feature.iconRes),
+                contentDescription = feature.title,
+                modifier = Modifier.size(64.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = feature.title,
+                fontSize = 16.sp,
+                color = Color.Black
+            )
+        }
     }
 }
+

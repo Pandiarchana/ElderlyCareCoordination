@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.compose.*
 import kotlinx.coroutines.delay
 import androidx.compose.ui.Alignment
@@ -111,7 +110,7 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
                     familyViewModel = familyViewModel,
                     onMemberClick = { /* optional */ },
                     padding = padding,
-                    navController = navController // ✅ Needed for FAB
+                    navController = navController
                 )
             }
         }

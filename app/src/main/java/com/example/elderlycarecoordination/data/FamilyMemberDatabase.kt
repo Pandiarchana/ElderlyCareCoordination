@@ -8,14 +8,13 @@ import com.example.elderlycarecoordination.model.FamilyMember
 import com.example.elderlycarecoordination.model.EmergencyAlert
 
 @Database(
-    entities = [FamilyMember::class, EmergencyAlert::class], // ✅ Added EmergencyAlert entity
+    entities = [FamilyMember::class, EmergencyAlert::class],
     version = 1,
     exportSchema = false
 )
 abstract class FamilyMemberDatabase : RoomDatabase() {
-
     abstract fun familyMemberDao(): FamilyMemberDao
-    abstract fun emergencyAlertDao(): EmergencyAlertDao // ✅ Added EmergencyAlert DAO
+    abstract fun emergencyAlertDao(): EmergencyAlertDao
 
     companion object {
         @Volatile
@@ -27,9 +26,9 @@ abstract class FamilyMemberDatabase : RoomDatabase() {
                     context.applicationContext,
                     FamilyMemberDatabase::class.java,
                     "family_member_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
-                return instance
+                instance
             }
         }
     }

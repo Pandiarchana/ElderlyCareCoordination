@@ -12,17 +12,13 @@ import kotlinx.coroutines.launch
 
 class FamilyViewModel(private val repository: FamilyRepository) : ViewModel() {
 
-    // ✅ Expose family members as StateFlow
+    // StateFlow to observe family members and sort them alphabetically
     val familyMembers: StateFlow<List<FamilyMember>> =
         repository.getAllMembers()
             .map { list -> list.sortedBy { it.name } }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5000),
-                emptyList()
-            )
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // ✅ Function to add a new family member
+    // Add new member
     fun addMember(name: String, phone: String, relationship: String) {
         viewModelScope.launch {
             val newMember = FamilyMember(
@@ -34,16 +30,17 @@ class FamilyViewModel(private val repository: FamilyRepository) : ViewModel() {
         }
     }
 
-    // ✅ (Optional) Update or Delete logic
-    fun deleteMember(member: FamilyMember) {
-        viewModelScope.launch {
-            repository.deleteMember(member)
-        }
-    }
-
+    // Update member (optional usage)
     fun updateMember(member: FamilyMember) {
         viewModelScope.launch {
             repository.updateMember(member)
+        }
+    }
+
+    // Delete member (optional usage)
+    fun deleteMember(member: FamilyMember) {
+        viewModelScope.launch {
+            repository.deleteMember(member)
         }
     }
 }

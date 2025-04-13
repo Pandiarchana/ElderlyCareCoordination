@@ -9,7 +9,7 @@ import com.example.elderlycarecoordination.model.EmergencyAlert
 
 @Database(
     entities = [FamilyMember::class, EmergencyAlert::class],
-    version = 1,
+    version = 2, // 🔄 Increase version if adding new tables!
     exportSchema = false
 )
 abstract class FamilyMemberDatabase : RoomDatabase() {
@@ -26,7 +26,9 @@ abstract class FamilyMemberDatabase : RoomDatabase() {
                     context.applicationContext,
                     FamilyMemberDatabase::class.java,
                     "family_member_database"
-                ).fallbackToDestructiveMigration().build()
+                )
+                    .fallbackToDestructiveMigration() // 🔄 Auto-reset on version mismatch
+                    .build()
                 INSTANCE = instance
                 instance
             }

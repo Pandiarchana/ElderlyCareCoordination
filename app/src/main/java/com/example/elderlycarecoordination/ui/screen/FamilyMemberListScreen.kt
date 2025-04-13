@@ -40,15 +40,32 @@ fun FamilyMemberListScreen(
             }
         }
     ) { innerPadding ->
-        LazyColumn(
-            contentPadding = PaddingValues(top = 12.dp, bottom = 100.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(innerPadding)
-        ) {
-            items(members) { member ->
-                WhatsAppStyleFamilyCard(member, onClick = { onMemberClick(member) })
+        if (members.isEmpty()) {
+            // Show fallback UI if no members
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No family members yet.\nTap + to add.",
+                    fontSize = 18.sp,
+                    color = Color.Gray
+                )
+            }
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(top = 12.dp, bottom = 100.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(innerPadding)
+            ) {
+                items(members) { member ->
+                    WhatsAppStyleFamilyCard(member, onClick = { onMemberClick(member) })
+                }
             }
         }
     }
@@ -63,9 +80,8 @@ fun WhatsAppStyleFamilyCard(member: FamilyMember, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Profile Image (placeholder)
         Image(
-            painter = painterResource(id = R.drawable.profile_icon), // Replace with your icon
+            painter = painterResource(id = R.drawable.profile_icon), // Update if you have different icons
             contentDescription = "Profile Picture",
             modifier = Modifier
                 .size(50.dp)

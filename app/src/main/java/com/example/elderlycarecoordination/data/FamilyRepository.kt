@@ -3,23 +3,17 @@ package com.example.elderlycarecoordination.data
 import com.example.elderlycarecoordination.model.FamilyMember
 import kotlinx.coroutines.flow.Flow
 
-/**
- * Repository to abstract access to the FamilyMember data source.
- */
 class FamilyRepository(private val dao: FamilyMemberDao) {
 
-    // Returns a Flow of all family members
-    fun getAllMembers(): Flow<List<FamilyMember>> = dao.getAllMembers()
+    fun getAllMembers(): Flow<List<FamilyMember>> {
+        return dao.getAllMembers()
+    }
 
-    // Returns a Flow for a specific family member by ID
-    fun getMemberById(id: Int): Flow<FamilyMember?> = dao.getMemberById(id)
+    suspend fun insertMember(member: FamilyMember) {
+        dao.insertMember(member)
+    }
 
-    // Insert new family member
-    suspend fun insertMember(member: FamilyMember): Long = dao.insertMember(member)
-
-    // Update existing family member
-    suspend fun updateMember(member: FamilyMember): Int = dao.updateMember(member)
-
-    // Delete a family member
-    suspend fun deleteMember(member: FamilyMember): Int = dao.deleteMember(member)
+    suspend fun deleteMember(member: FamilyMember) {
+        dao.deleteMember(member)
+    }
 }

@@ -4,15 +4,15 @@ import androidx.room.*
 import com.example.elderlycarecoordination.model.EmergencyAlert
 import kotlinx.coroutines.flow.Flow
 
-/**
- * DAO interface for accessing Emergency Alert data.
- */
 @Dao
 interface EmergencyAlertDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAlert(alert: EmergencyAlert): Long
+    suspend fun insertAlert(alert: EmergencyAlert)
 
-    @Query("SELECT * FROM emergency_alerts ORDER BY timestamp DESC")
+    @Query("SELECT * FROM emergency_alert ORDER BY timestamp DESC")
     fun getAllAlerts(): Flow<List<EmergencyAlert>>
+
+    @Delete
+    suspend fun deleteAlert(alert: EmergencyAlert)
 }

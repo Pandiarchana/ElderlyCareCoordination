@@ -112,4 +112,3 @@ fun FeatureCard(feature: FeatureItem, onClick: () -> Unit) {
         }
     }
 }
-

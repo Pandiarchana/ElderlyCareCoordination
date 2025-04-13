@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.elderlycarecoordination.model.FamilyMember
 import com.example.elderlycarecoordination.viewmodel.FamilyViewModel
-import androidx.compose.ui.Alignment
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddFamilyMemberScreen(
     familyViewModel: FamilyViewModel,
@@ -16,17 +18,18 @@ fun AddFamilyMemberScreen(
     padding: PaddingValues
 ) {
     var name by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     var relationship by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .padding(padding)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(16.dp)
+            .fillMaxSize()
     ) {
-        Text(text = "Add Family Member", style = MaterialTheme.typography.titleLarge)
+        Text("Add Family Member", style = MaterialTheme.typography.headlineSmall)
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = name,
@@ -34,12 +37,19 @@ fun AddFamilyMemberScreen(
             label = { Text("Name") },
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
-            value = phone,
-            onValueChange = { phone = it },
+            value = phoneNumber,
+            onValueChange = { phoneNumber = it },
             label = { Text("Phone Number") },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = relationship,
             onValueChange = { relationship = it },
@@ -47,14 +57,20 @@ fun AddFamilyMemberScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
-                familyViewModel.addMember(name, phone, relationship)
+                familyViewModel.addFamilyMember(
+                    name = name,
+                    phoneNumber = phoneNumber,
+                    relationship = relationship
+                )
                 onMemberAdded()
             },
-            modifier = Modifier.align(Alignment.End)
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Save")
+            Text("Add Member")
         }
     }
 }

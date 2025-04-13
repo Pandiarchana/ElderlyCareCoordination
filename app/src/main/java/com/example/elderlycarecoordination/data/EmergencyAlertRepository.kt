@@ -3,13 +3,20 @@ package com.example.elderlycarecoordination.data
 import com.example.elderlycarecoordination.model.EmergencyAlert
 import kotlinx.coroutines.flow.Flow
 
-/**
- * Repository to manage data operations for Emergency Alerts.
- * Delegates to the EmergencyAlertDao.
- */
-class EmergencyAlertRepository(private val dao: EmergencyAlertDao) {
+class EmergencyAlertRepository(private val alertDao: EmergencyAlertDao) {
 
-    fun getAllAlerts(): Flow<List<EmergencyAlert>> = dao.getAllAlerts()
+    // Insert alert (no need to return Long if DAO returns Unit)
+    suspend fun insert(alert: EmergencyAlert) {
+        alertDao.insertAlert(alert)
+    }
 
-    suspend fun insertAlert(alert: EmergencyAlert): Long = dao.insertAlert(alert)
+    // Get all alerts
+    fun getAllAlerts(): Flow<List<EmergencyAlert>> {
+        return alertDao.getAllAlerts()
+    }
+
+    // Delete an alert
+    suspend fun delete(alert: EmergencyAlert) {
+        alertDao.deleteAlert(alert)
+    }
 }

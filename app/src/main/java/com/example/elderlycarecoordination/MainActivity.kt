@@ -14,14 +14,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import kotlinx.coroutines.delay
 import androidx.compose.ui.Alignment
+import androidx.navigation.navArgument
 
 import com.example.elderlycarecoordination.ui.screens.*
-import com.example.elderlycarecoordination.ui.screen.FamilyMemberListScreen
-import com.example.elderlycarecoordination.ui.screen.AddFamilyMemberScreen
-
+import com.example.elderlycarecoordination.ui.screen.*
 import com.example.elderlycarecoordination.viewmodel.EmergencyAlertViewModel
 import com.example.elderlycarecoordination.viewmodel.EmergencyAlertViewModelFactory
 import com.example.elderlycarecoordination.viewmodel.FamilyViewModel
@@ -51,13 +51,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
     val navController = rememberNavController()
-
     val context = LocalContext.current
     val database = FamilyMemberDatabase.getDatabase(context)
     val repository = FamilyRepository(database.familyMemberDao())
     val familyViewModel = remember { FamilyViewModel(repository) }
 
     NavHost(navController, startDestination = "splash") {
+
         composable("splash") {
             SplashScreen {
                 navController.navigate("login") {
@@ -108,7 +108,7 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
             Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 FamilyMemberListScreen(
                     familyViewModel = familyViewModel,
-                    onMemberClick = { /* optional */ },
+                    onMemberClick = { },
                     padding = padding,
                     navController = navController
                 )
@@ -125,6 +125,23 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
                     padding = padding
                 )
             }
+        }
+
+        // ✅ WhatsApp-style Chat List Screen
+        composable("family_chat_list") {
+            FamilyChatListScreen(
+                familyViewModel = familyViewModel,
+                navController = navController
+            )
+        }
+
+        // ✅ Individual Chat Screen
+        composable(
+            "chat/{name}",
+            arguments = listOf(navArgument("name") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name") ?: "Unknown"
+            ChatScreen(name = name)
         }
     }
 }

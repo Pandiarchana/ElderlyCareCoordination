@@ -46,7 +46,6 @@ fun FamilyChatListScreen(
             }
         )
 
-        // Search bar
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
@@ -64,6 +63,7 @@ fun FamilyChatListScreen(
         LazyColumn {
             items(filteredList) { member ->
                 ChatItem(member = member, onClick = {
+                    println("✅ ChatItem clicked: ${member.name}") // ✅ Check in Logcat
                     navController.navigate("chat/${member.name}")
                 })
             }
@@ -73,28 +73,29 @@ fun FamilyChatListScreen(
 
 @Composable
 fun ChatItem(member: FamilyMember, onClick: () -> Unit) {
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.profile_icon),
-            contentDescription = "Profile",
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = R.drawable.profile_icon),
+                contentDescription = "Profile",
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+            )
 
-        Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-        Column(modifier = Modifier.weight(1f)) {
-            Text(member.name, fontSize = 18.sp)
-            Text("Tap to chat", fontSize = 14.sp, color = Color.Gray)
+            Column(modifier = Modifier.weight(1f)) {
+                Text(member.name, fontSize = 18.sp)
+                Text("Tap to chat", fontSize = 14.sp, color = Color.Gray)
+            }
+
+            Text("12:30 PM", fontSize = 12.sp, color = Color.Gray)
         }
-
-        Text("12:30 PM", fontSize = 12.sp, color = Color.Gray)
     }
 }

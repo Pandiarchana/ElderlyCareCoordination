@@ -16,18 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
-import com.example.elderlycarecoordination.data.EmergencyAlertRepository
-import com.example.elderlycarecoordination.data.FamilyMemberDatabase
-import com.example.elderlycarecoordination.data.FamilyRepository
+import com.example.elderlycarecoordination.data.*
 import com.example.elderlycarecoordination.ui.screen.*
 import com.example.elderlycarecoordination.ui.screens.*
-import com.example.elderlycarecoordination.viewmodel.EmergencyAlertViewModel
-import com.example.elderlycarecoordination.viewmodel.EmergencyAlertViewModelFactory
-import com.example.elderlycarecoordination.viewmodel.FamilyViewModel
+import com.example.elderlycarecoordination.viewmodel.*
 import kotlinx.coroutines.delay
 import java.net.URLDecoder
-import androidx.navigation.navArgument
 import androidx.compose.ui.Alignment
+import androidx.navigation.navArgument
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -54,12 +50,9 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
     val context = LocalContext.current
     val database = FamilyMemberDatabase.getDatabase(context)
     val repository = FamilyRepository(database.familyMemberDao())
-
-    // ✅ Correct ViewModel from the proper package
     val familyViewModel = remember { FamilyViewModel(repository) }
 
     NavHost(navController, startDestination = "splash") {
-
         composable("splash") {
             SplashScreen {
                 navController.navigate("login") {
@@ -129,7 +122,6 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
             }
         }
 
-        // ✅ WhatsApp-style family chat list
         composable("family_chat_list") {
             FamilyChatListScreen(
                 familyViewModel = familyViewModel,
@@ -137,7 +129,6 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
             )
         }
 
-        // ✅ Individual chat screen with encoded name
         composable(
             "chat/{name}",
             arguments = listOf(navArgument("name") { type = NavType.StringType })
@@ -145,6 +136,10 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
             val encodedName = backStackEntry.arguments?.getString("name") ?: "Unknown"
             val decodedName = URLDecoder.decode(encodedName, "UTF-8")
             ChatScreen(name = decodedName)
+        }
+
+        composable("settings") {
+            SettingsScreen(navController = navController)
         }
     }
 }

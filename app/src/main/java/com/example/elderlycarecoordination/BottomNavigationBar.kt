@@ -1,29 +1,18 @@
 package com.example.elderlycarecoordination.ui.screens
 
 import android.app.Activity
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
-import androidx.compose.material.icons.filled.RadioButtonUnchecked
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
-// Data class for a navigation item.
 data class NavItem(
     val icon: androidx.compose.ui.graphics.vector.ImageVector,
     val route: String
@@ -33,12 +22,12 @@ data class NavItem(
 fun BottomNavigationBar(navController: NavController) {
     val context = LocalContext.current
     val activity = context as? Activity
-
     var showExitDialog by remember { mutableStateOf(false) }
 
     val items = listOf(
         NavItem(icon = Icons.AutoMirrored.Filled.ArrowBack, route = "nav_back"),
-        NavItem(icon = Icons.Filled.RadioButtonUnchecked, route = "home"),
+        NavItem(icon = Icons.Filled.Home, route = "home"),
+        NavItem(icon = Icons.Filled.Settings, route = "settings"),
         NavItem(icon = Icons.Filled.CheckBoxOutlineBlank, route = "nav_exit")
     )
 
@@ -52,8 +41,7 @@ fun BottomNavigationBar(navController: NavController) {
         items.forEach { item ->
             NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = null) },
-                label = { /* No label */ },
-                selected = (currentRoute == item.route),
+                selected = currentRoute == item.route,
                 onClick = {
                     when (item.route) {
                         "nav_back" -> {
@@ -61,6 +49,7 @@ fun BottomNavigationBar(navController: NavController) {
                                 activity.finish()
                             }
                         }
+
                         "home" -> {
                             navController.navigate("home") {
                                 launchSingleTop = true
@@ -70,6 +59,17 @@ fun BottomNavigationBar(navController: NavController) {
                                 }
                             }
                         }
+
+                        "settings" -> {
+                            navController.navigate("settings") {
+                                launchSingleTop = true
+                                restoreState = true
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                            }
+                        }
+
                         "nav_exit" -> {
                             showExitDialog = true
                         }

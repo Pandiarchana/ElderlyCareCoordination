@@ -4,7 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,26 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.elderlycarecoordination.R
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 
-data class ChatMessage(val sender: String, val message: String, val isMe: Boolean)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(name: String) {
-    var message by remember { mutableStateOf("") }
-    val messages = remember {
-        mutableStateListOf(
-            ChatMessage("John Doe", "Hi! How are you?", false),
-            ChatMessage("You", "I’m doing great. How’s everything?", true),
-            ChatMessage("John Doe", "All good here. Let’s catch up soon!", false)
-        )
-    }
+    var message by remember { mutableStateOf(TextFieldValue("")) }
+
+    val messages = listOf(
+        "Hi $name, how are you feeling today?",
+        "Remember to take your medication 💊",
+        "Don't forget your appointment at 4 PM 🕓"
+    )
 
     Scaffold(
         topBar = {
@@ -45,11 +42,13 @@ fun ChatScreen(name: String) {
                                 .size(36.dp)
                                 .clip(CircleShape)
                         )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(name, fontSize = 20.sp, color = Color.White)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column {
+                            Text(name, fontSize = 18.sp)
+                            Text("Online", fontSize = 12.sp, color = Color.LightGray)
+                        }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF3A8667))
+                }
             )
         },
         bottomBar = {
@@ -62,88 +61,42 @@ fun ChatScreen(name: String) {
                 OutlinedTextField(
                     value = message,
                     onValueChange = { message = it },
+                    modifier = Modifier.weight(1f),
                     placeholder = { Text("Type a message") },
-                    modifier = Modifier.weight(1f)
+                    singleLine = true
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(
-                    onClick = {
-                        if (message.isNotBlank()) {
-                            messages.add(ChatMessage("You", message, true))
-                            message = ""
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3A8667))
-                ) {
-                    Text("Send", color = Color.White)
+                IconButton(onClick = {
+                    // Simulate send
+                    message = TextFieldValue("")
+                }) {
+                    Icon(Icons.Default.Send, contentDescription = "Send")
                 }
             }
         }
     ) { innerPadding ->
-        LazyColumn(
-            contentPadding = innerPadding,
+        Column(
             modifier = Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
-                .background(Color(0xFFF8F8F8))
-                .padding(8.dp)
+                .padding(12.dp)
         ) {
-            items(messages) { chat ->
+            messages.forEach { msg ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
-                    horizontalArrangement = if (chat.isMe) Arrangement.End else Arrangement.Start,
-                    verticalAlignment = Alignment.Top
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    if (!chat.isMe) {
-                        Image(
-                            painter = painterResource(id = R.drawable.profile_icon),
-                            contentDescription = "Sender",
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clip(CircleShape)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                    }
-
-                    Column(
-                        modifier = Modifier
-                            .background(
-                                color = if (chat.isMe) Color(0xFFDCF8C6) else Color.White,
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .padding(12.dp)
+                    Surface(
+                        shape = MaterialTheme.shapes.medium,
+                        color = Color(0xFFDCF8C6)
                     ) {
-                        if (!chat.isMe) {
-                            Text(text = chat.sender, fontSize = 14.sp, color = Color(0xFF3A8667))
-                        }
-                        Text(text = chat.message, fontSize = 16.sp)
-                    }
-
-                    if (chat.isMe) {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Image(
-                            painter = painterResource(id = R.drawable.profile_icon),
-                            contentDescription = "My Profile",
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clip(CircleShape)
+                        Text(
+                            text = msg,
+                            modifier = Modifier.padding(8.dp),
+                            fontSize = 16.sp
                         )
                     }
-                }
-            }
-
-            if (messages.isEmpty()) {
-                item {
-                    Text(
-                        text = "Start chatting with $name...",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        textAlign = TextAlign.Center,
-                        color = Color.Gray,
-                        fontSize = 16.sp
-                    )
                 }
             }
         }

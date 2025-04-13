@@ -22,32 +22,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.elderlycarecoordination.R
-import com.example.elderlycarecoordination.model.FamilyMember
 import com.example.elderlycarecoordination.viewmodel.FamilyViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
+data class ChatProfile(val name: String, val relationship: String, val imageRes: Int)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FamilyChatListScreen(
-    familyViewModel: FamilyViewModel,
-    navController: NavController
+    navController: NavController,
+    familyViewModel: FamilyViewModel
 ) {
-    val members by familyViewModel.familyMembers.collectAsState()
+    val profiles = listOf(
+        ChatProfile("John Doe", "Son", R.drawable.profile_icon),
+    )
+
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
-            title = { Text("Family Chats", fontSize = 22.sp) },
+            title = { Text("Chats", fontSize = 22.sp) },
             actions = {
-                IconButton(onClick = { /* Start new chat */ }) {
+                IconButton(onClick = { }) {
                     Icon(Icons.Default.Create, contentDescription = "New Chat")
                 }
-                IconButton(onClick = { /* Filter action */ }) {
+                IconButton(onClick = { }) {
                     Icon(Icons.Default.FilterList, contentDescription = "Filter")
                 }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF3A8667))
+            }
         )
 
         OutlinedTextField(
@@ -60,14 +63,14 @@ fun FamilyChatListScreen(
             singleLine = true
         )
 
-        val filteredList = members.filter {
+        val filteredList = profiles.filter {
             it.name.contains(searchQuery.text, ignoreCase = true)
         }
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(filteredList) { member ->
                 ChatItem(
-                    member = member,
+                    profile = member,
                     onChatClick = {
                         val encodedName = URLEncoder.encode(member.name, StandardCharsets.UTF_8.toString())
                         navController.navigate("chat/$encodedName")
@@ -79,7 +82,7 @@ fun FamilyChatListScreen(
 }
 
 @Composable
-fun ChatItem(member: FamilyMember, onChatClick: () -> Unit) {
+fun ChatItem(profile: ChatProfile, onChatClick: () -> Unit) {
     var showCallDialog by remember { mutableStateOf(false) }
 
     if (showCallDialog) {
@@ -90,7 +93,7 @@ fun ChatItem(member: FamilyMember, onChatClick: () -> Unit) {
                     Text("End Call")
                 }
             },
-            title = { Text("Calling ${member.name}...") },
+            title = { Text("Calling ${profile.name}...") },
             text = { Text("Simulated voice call...") }
         )
     }
@@ -103,7 +106,7 @@ fun ChatItem(member: FamilyMember, onChatClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.profile_icon),
+            painter = painterResource(id = profile.imageRes),
             contentDescription = "Profile",
             modifier = Modifier
                 .size(50.dp)
@@ -113,14 +116,11 @@ fun ChatItem(member: FamilyMember, onChatClick: () -> Unit) {
         Spacer(modifier = Modifier.width(12.dp))
 
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = member.name, fontSize = 18.sp)
-            Text(text = member.relationship, fontSize = 14.sp, color = Color.Gray)
+            Text(text = profile.name, fontSize = 18.sp)
+            Text(text = profile.relationship, fontSize = 14.sp, color = Color.Gray)
         }
 
-        IconButton(
-            onClick = { showCallDialog = true },
-            modifier = Modifier.size(32.dp)
-        ) {
+        IconButton(onClick = { showCallDialog = true }) {
             Icon(
                 imageVector = Icons.Default.Phone,
                 contentDescription = "Call",

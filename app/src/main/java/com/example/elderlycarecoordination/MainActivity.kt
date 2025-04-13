@@ -16,28 +16,25 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
-import kotlinx.coroutines.delay
-import java.net.URLDecoder
-import androidx.compose.ui.Alignment
-import com.example.elderlycarecoordination.ui.screens.*
+import com.example.elderlycarecoordination.data.EmergencyAlertRepository
+import com.example.elderlycarecoordination.data.FamilyMemberDatabase
+import com.example.elderlycarecoordination.data.FamilyRepository
 import com.example.elderlycarecoordination.ui.screen.*
+import com.example.elderlycarecoordination.ui.screens.*
 import com.example.elderlycarecoordination.viewmodel.EmergencyAlertViewModel
 import com.example.elderlycarecoordination.viewmodel.EmergencyAlertViewModelFactory
 import com.example.elderlycarecoordination.viewmodel.FamilyViewModel
-import com.example.elderlycarecoordination.data.EmergencyAlertRepository
-import com.example.elderlycarecoordination.data.FamilyRepository
-import com.example.elderlycarecoordination.data.FamilyMemberDatabase
+import kotlinx.coroutines.delay
+import java.net.URLDecoder
 import androidx.navigation.navArgument
+import androidx.compose.ui.Alignment
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize Room database instance
         val database = FamilyMemberDatabase.getDatabase(applicationContext)
-
-        // Emergency Alert Repository and ViewModel setup
         val alertRepo = EmergencyAlertRepository(database.emergencyAlertDao())
         val alertViewModel = ViewModelProvider(
             this,
@@ -55,12 +52,14 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
     val navController = rememberNavController()
     val context = LocalContext.current
-    // Initialize Family Repository and ViewModel so it is shared across screens
     val database = FamilyMemberDatabase.getDatabase(context)
     val repository = FamilyRepository(database.familyMemberDao())
+
+    // ✅ Correct ViewModel from the proper package
     val familyViewModel = remember { FamilyViewModel(repository) }
 
     NavHost(navController, startDestination = "splash") {
+
         composable("splash") {
             SplashScreen {
                 navController.navigate("login") {
@@ -78,52 +77,40 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
         }
 
         composable("home") {
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) { padding ->
+            Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 HomeScreen(navController, padding)
             }
         }
 
         composable("medication_tracker") {
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) { padding ->
+            Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 MedicationTrackerScreen(padding)
             }
         }
 
         composable("appointment_scheduler") {
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) { padding ->
+            Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 AppointmentSchedulerScreen(padding)
             }
         }
 
         composable("daily_care_log") {
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) { padding ->
+            Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 DailyCareLogScreen(padding)
             }
         }
 
         composable("emergency_alerts") {
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) { padding ->
+            Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 EmergencyAlertsScreen(padding = padding, viewModel = alertViewModel)
             }
         }
 
         composable("family_members") {
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) { padding ->
+            Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 FamilyMemberListScreen(
                     familyViewModel = familyViewModel,
-                    onMemberClick = { },
+                    onMemberClick = {},
                     padding = padding,
                     navController = navController
                 )
@@ -131,18 +118,18 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
         }
 
         composable("add_family_member") {
-            Scaffold(
-                bottomBar = { BottomNavigationBar(navController) }
-            ) { padding ->
+            Scaffold(bottomBar = { BottomNavigationBar(navController) }) { padding ->
                 AddFamilyMemberScreen(
                     familyViewModel = familyViewModel,
-                    onMemberAdded = { navController.popBackStack("family_members", false) },
+                    onMemberAdded = {
+                        navController.popBackStack("family_members", false)
+                    },
                     padding = padding
                 )
             }
         }
 
-        // Route for WhatsApp-style Family Chat List Screen
+        // ✅ WhatsApp-style family chat list
         composable("family_chat_list") {
             FamilyChatListScreen(
                 familyViewModel = familyViewModel,
@@ -150,7 +137,7 @@ fun AppNavigation(alertViewModel: EmergencyAlertViewModel) {
             )
         }
 
-        // Route for Individual Chat Screen with encoded name
+        // ✅ Individual chat screen with encoded name
         composable(
             "chat/{name}",
             arguments = listOf(navArgument("name") { type = NavType.StringType })
@@ -168,6 +155,7 @@ fun SplashScreen(onClick: () -> Unit) {
         delay(2000L)
         onClick()
     }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
